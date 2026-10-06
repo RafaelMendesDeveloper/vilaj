@@ -252,3 +252,57 @@ revoke all on function usar_cupom(text, bigint)        from public, anon;
 grant execute on function aniversariantes(int)         to authenticated, service_role;
 grant execute on function consultar_cupom(text)        to authenticated;
 grant execute on function usar_cupom(text, bigint)     to authenticated;
+
+-- ---------------------------------------------------------------------
+-- Histórico de cupons (aba Histórico)
+-- p_campo = 'envio' filtra pela data de envio; 'uso' pela data de uso.
+-- ---------------------------------------------------------------------
+
+drop function if exists historico_cupons(date, date, text);
+create or replace function historico_cupons(p_inicio date, p_fim date, p_campo text default 'envio')
+returns table (
+  codigo        text,
+  cliente       text,
+  email         text,
+  enviado_em    timestamptz,
+  validade      date,
+  situacao      text,
+  usado_em      timestamptz,
+  beneficio     text,
+  validado_por  text
+)
+language plpgsql
+stable
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then
+    return;
+  end if;
+
+  return query
+  select c.codigo,
+         p.nome,
+         coalesce(c.enviado_para, p.email),
+         c.enviado_em,
+         c.validade,
+         case when c.usado then 'usado'
+              when c.validade < hoje_sp() then 'vencido'
+              else 'disponivel' end,
+         c.usado_em,
+         b.nome,
+         u.email::text
+    from cupons c
+    join pessoas p          on p.id = c.pessoa_id
+    left join beneficios b  on b.id = c.beneficio_id
+    left join auth.users u  on u.id = c.usado_por
+   where (case when p_campo = 'uso' then c.usado_em
+               else coalesce(c.enviado_em, c.criado_em) end
+          at time zone 'America/Sao_Paulo')::date between p_inicio and p_fim
+   order by coalesce(c.usado_em, c.enviado_em, c.criado_em) desc;
+end;
+$$;
+
+revoke all on function historico_cupons(date, date, text) from public, anon;
+grant execute on function historico_cupons(date, date, text) to authenticated;

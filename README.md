@@ -1,6 +1,6 @@
 # Vilaj — Cupons de aniversário
 
-Sistema da Vilaj Coworking que envia cupons de aniversário por email e permite validar esses cupons na recepção.
+Sistema do Vilaj Coworking que envia cupons de aniversário por email e permite validar esses cupons na recepção.
 
 - **Site:** https://rafaelmendesdeveloper.github.io/vilaj/
 - **Tela de login:** os usuários são criados no Supabase (não há cadastro aberto).

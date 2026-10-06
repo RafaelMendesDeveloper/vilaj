@@ -1,34 +1,7 @@
-const $ = (id) => document.getElementById(id);
-
-const esc = (texto) => String(texto ?? "").replace(/[&<>"']/g, (c) => (
-  { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
-));
-
-// "2026-10-06" -> Date local (sem deslocar o dia pelo fuso)
-const paraData = (iso) => {
-  const [a, m, d] = iso.split("-").map(Number);
-  return new Date(a, m - 1, d);
-};
-const dataCurta = (iso) => paraData(iso).toLocaleDateString("pt-BR");
-const dataHora = (iso) => new Date(iso).toLocaleString("pt-BR", {
-  timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
-});
-const diaSemana = (iso) => paraData(iso).toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "2-digit" });
-
 let beneficios = [];
 
-// ---------------------------------------------------------------------------
-// Sessão
-// ---------------------------------------------------------------------------
-
 async function iniciar() {
-  const { data } = await sb.auth.getSession();
-  if (!data.session) {
-    location.replace("index.html");
-    return;
-  }
-  $("usuario").textContent = data.session.user.email;
-  document.body.hidden = false;
+  if (!await exigirSessao()) return;
 
   $("hoje").textContent = new Date().toLocaleDateString("pt-BR", {
     timeZone: "America/Sao_Paulo", weekday: "long", day: "numeric", month: "long",
@@ -40,12 +13,6 @@ async function iniciar() {
   carregarAniversariantes(0);
   $("codigo").focus();
 }
-
-sb.auth.onAuthStateChange((evento) => {
-  if (evento === "SIGNED_OUT") location.replace("index.html");
-});
-
-$("sair").addEventListener("click", () => sb.auth.signOut());
 
 // ---------------------------------------------------------------------------
 // Aniversariantes
@@ -80,10 +47,10 @@ async function carregarAniversariantes(dias) {
     return;
   }
 
-  const hojeIso = new Date().toLocaleDateString("sv-SE", { timeZone: "America/Sao_Paulo" }); // AAAA-MM-DD
+  const hoje = hojeIso();
 
   alvo.innerHTML = `<ul class="lista">${data.map((p) => {
-    const ehHoje = p.data_aniversario === hojeIso;
+    const ehHoje = p.data_aniversario === hoje;
     const tags = [];
     if (!ehHoje) tags.push(`<span class="tag tag--data">${esc(diaSemana(p.data_aniversario))}</span>`);
     if (p.cupom_usado) tags.push('<span class="tag tag--usado">cupom usado</span>');

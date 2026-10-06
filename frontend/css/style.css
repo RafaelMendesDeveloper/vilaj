@@ -264,7 +264,85 @@ button, input { font: inherit; }
   padding: 12px 14px; border-radius: 10px; background: var(--vermelho-claro); color: var(--vermelho); font-size: 14px; font-weight: 600;
 }
 
+/* ---------- Menu ---------- */
+
+.topo__esquerda { display: flex; align-items: center; gap: 28px; min-width: 0; }
+
+.menu { display: flex; gap: 4px; }
+.menu__link {
+  color: #B9B5AC; text-decoration: none; font-size: 14px; font-weight: 600;
+  padding: 8px 12px; border-radius: 8px; white-space: nowrap;
+}
+.menu__link:hover { color: var(--branco); background: var(--grafite-2); }
+.menu__link[aria-current="page"] { color: var(--branco); background: var(--grafite-2); box-shadow: inset 0 -2px 0 var(--laranja); }
+.menu__link:focus-visible { outline: 3px solid rgba(242, 106, 53, .5); outline-offset: 2px; }
+
+/* ---------- Histórico ---------- */
+
+select.campo {
+  appearance: none; -webkit-appearance: none; padding-right: 36px; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--texto-2) 50%), linear-gradient(135deg, var(--texto-2) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 21px, calc(100% - 13px) 21px;
+  background-size: 5px 5px; background-repeat: no-repeat;
+}
+
+.historico { max-width: 1160px; margin: 0 auto; padding: 28px 16px 48px; }
+
+.historico__cabeca { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.historico__cabeca h1 { margin: 0; font-family: var(--fonte-display); font-size: 26px; font-weight: 600; }
+
+.filtros {
+  display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; margin-bottom: 20px;
+}
+.filtro { flex: 1 1 160px; }
+.filtro--datas { display: flex; gap: 10px; flex: 2 1 300px; }
+.filtro--datas > div { flex: 1; }
+.filtro--busca { flex: 2 1 220px; }
+.filtros .campo { height: 44px; font-size: 15px; }
+.filtros select.campo { background-position: calc(100% - 18px) 19px, calc(100% - 13px) 19px; }
+
+.indicadores { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px; }
+.indicador {
+  background: var(--branco); border-radius: var(--raio); box-shadow: var(--sombra); padding: 18px 20px;
+  border-top: 3px solid var(--laranja);
+}
+.indicador span { display: block; font-size: 13px; font-weight: 600; color: var(--texto-3); text-transform: uppercase; letter-spacing: .5px; }
+.indicador strong { display: block; margin-top: 6px; font-family: var(--fonte-display); font-size: 30px; font-weight: 600; }
+.indicador .indicador__texto { font-family: var(--fonte); font-size: 17px; font-weight: 700; line-height: 1.3; margin-top: 10px; }
+
+.cartao--tabela { padding: 8px 0 0; }
+.tabela__contagem { margin: 8px 24px 8px; font-size: 14px; font-weight: 600; color: var(--texto-3); }
+.tabela__rolagem { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+.tabela { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabela th {
+  text-align: left; padding: 10px 14px; font-size: 12px; font-weight: 700; color: var(--texto-3);
+  text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--linha); white-space: nowrap;
+}
+.tabela td { padding: 12px 14px; border-bottom: 1px solid var(--linha); vertical-align: top; white-space: nowrap; }
+.tabela th:first-child, .tabela td:first-child { padding-left: 24px; }
+.tabela th:last-child, .tabela td:last-child { padding-right: 24px; }
+.tabela tbody tr:last-child td { border-bottom: 0; }
+.tabela tbody tr:hover td { background: #FBFAF7; }
+.tabela td strong { display: block; }
+.tabela td small { display: block; color: var(--texto-3); font-size: 13px; margin-top: 2px; }
+.tabela__codigo { font-family: var(--fonte-mono); font-weight: 700; letter-spacing: .5px; }
+.tabela .vazio, .tabela .carregando { white-space: normal; }
+
+.selo--disponivel { background: var(--laranja-claro); color: var(--laranja-escuro); }
+
 /* ---------- Responsivo ---------- */
+
+@media (max-width: 880px) {
+  .indicadores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .topo__dentro { flex-wrap: wrap; }
+  .topo__esquerda { gap: 12px; }
+  .menu__link { padding: 6px 8px; }
+  .historico__cabeca h1 { font-size: 22px; }
+}
 
 @media (max-width: 880px) {
   .painel { grid-template-columns: 1fr; }

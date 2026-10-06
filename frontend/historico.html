@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Histórico — Vilaj Cupons</title>
+<link rel="icon" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Outfit:wght@600&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body hidden>
+<header class="topo">
+  <div class="topo__dentro">
+    <div class="topo__esquerda">
+      <img class="topo__logo" src="img/logo.png" alt="Vilaj Coworking">
+      <nav class="menu" aria-label="Seções">
+        <a class="menu__link" href="app.html">Validação</a>
+        <a class="menu__link" href="historico.html" aria-current="page">Histórico</a>
+      </nav>
+    </div>
+    <div class="topo__usuario">
+      <span class="topo__email" id="usuario"></span>
+      <button class="botao botao--escuro" id="sair" type="button">Sair</button>
+    </div>
+  </div>
+</header>
+
+<main class="historico">
+  <div class="historico__cabeca">
+    <h1><span class="seta" aria-hidden="true">›››</span>Histórico de cupons</h1>
+    <button class="botao" id="exportar" type="button" disabled>Exportar CSV</button>
+  </div>
+
+  <form class="filtros cartao" id="filtros">
+    <div class="filtro">
+      <label class="rotulo" for="periodo">Período</label>
+      <select class="campo" id="periodo">
+        <option value="mes">Este mês</option>
+        <option value="mes-passado">Mês passado</option>
+        <option value="30">Últimos 30 dias</option>
+        <option value="90">Últimos 90 dias</option>
+        <option value="ano">Este ano</option>
+        <option value="tudo">Tudo</option>
+        <option value="personalizado">Personalizado…</option>
+      </select>
+    </div>
+    <div class="filtro filtro--datas" id="datas" hidden>
+      <div>
+        <label class="rotulo" for="inicio">De</label>
+        <input class="campo" id="inicio" type="date">
+      </div>
+      <div>
+        <label class="rotulo" for="fim">Até</label>
+        <input class="campo" id="fim" type="date">
+      </div>
+    </div>
+    <div class="filtro">
+      <label class="rotulo" for="campo">Considerar data de</label>
+      <select class="campo" id="campo">
+        <option value="envio">Envio</option>
+        <option value="uso">Uso</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <label class="rotulo" for="situacao">Situação</label>
+      <select class="campo" id="situacao">
+        <option value="">Todas</option>
+        <option value="usado">Usados</option>
+        <option value="disponivel">Disponíveis</option>
+        <option value="vencido">Vencidos</option>
+      </select>
+    </div>
+    <div class="filtro filtro--busca">
+      <label class="rotulo" for="busca">Buscar</label>
+      <input class="campo" id="busca" type="search" placeholder="Nome, email ou código">
+    </div>
+  </form>
+
+  <section class="indicadores" aria-label="Resumo do período">
+    <div class="indicador"><span>Enviados</span><strong id="ind-enviados">–</strong></div>
+    <div class="indicador"><span>Usados</span><strong id="ind-usados">–</strong></div>
+    <div class="indicador"><span>Taxa de uso</span><strong id="ind-taxa">–</strong></div>
+    <div class="indicador"><span>Benefício mais usado</span><strong id="ind-beneficio" class="indicador__texto">–</strong></div>
+  </section>
+
+  <section class="cartao cartao--tabela">
+    <p class="tabela__contagem" id="contagem" aria-live="polite"></p>
+    <div class="tabela__rolagem">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Código</th>
+            <th>Enviado em</th>
+            <th>Validade</th>
+            <th>Situação</th>
+            <th>Usado em</th>
+            <th>Benefício</th>
+            <th>Validado por</th>
+          </tr>
+        </thead>
+        <tbody id="linhas"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/comum.js"></script>
+<script src="js/historico.js"></script>
+</body>
+</html>

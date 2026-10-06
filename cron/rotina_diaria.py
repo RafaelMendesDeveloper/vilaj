@@ -1,4 +1,4 @@
-"""Rotina diária da Vilaj: sincroniza as pessoas do Conexa com o Supabase e
+"""Rotina diária do Vilaj: sincroniza as pessoas do Conexa com o Supabase e
 envia um cupom por email para cada aniversariante do dia.
 
 Uso:
@@ -196,7 +196,7 @@ def montar_email(remetente_nome, remetente_email, destino, nome, codigo, validad
     )
     corpo_texto = (
         f"Feliz aniversário, {primeiro_nome(nome)}!\n\n"
-        f"Para comemorar, a Vilaj preparou um cupom para você usar em um destes benefícios:\n\n"
+        f"Para comemorar, o Vilaj preparou um cupom para você usar em um destes benefícios:\n\n"
         + "".join(f"- {b['nome']}: {b['descricao']}\n" for b in beneficios)
         + f"\nSeu cupom: {codigo}\nVálido até {formatar_data(validade)}, para um benefício à sua escolha.\n\n"
         "É só apresentar o código na recepção ou responder este email.\n\n"
@@ -204,7 +204,7 @@ def montar_email(remetente_nome, remetente_email, destino, nome, codigo, validad
     )
 
     msg = EmailMessage()
-    msg["Subject"] = f"Feliz aniversário, {primeiro_nome(nome)}! Seu presente da Vilaj chegou"
+    msg["Subject"] = f"Feliz aniversário, {primeiro_nome(nome)}! Seu presente do Vilaj chegou"
     msg["From"] = formataddr((remetente_nome, remetente_email))
     msg["To"] = destino
     msg["Message-ID"] = make_msgid(domain=remetente_email.split("@")[1])
