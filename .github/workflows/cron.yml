@@ -1,0 +1,43 @@
+name: Cupons de aniversário
+
+on:
+  schedule:
+    - cron: "0 11 * * *"   # 11:00 UTC = 08:00 em Brasília
+  workflow_dispatch:
+    inputs:
+      email_teste:
+        description: "Preencha para só mandar um email de exemplo para este endereço (não sincroniza nem gera cupons)"
+        required: false
+        default: ""
+
+concurrency:
+  group: cupons-aniversario
+  cancel-in-progress: false
+
+jobs:
+  rotina:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      CONEXA_SUBDOMAIN: ${{ secrets.CONEXA_SUBDOMAIN }}
+      CONEXA_TOKEN: ${{ secrets.CONEXA_TOKEN }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      ENVIO_REAL: ${{ vars.ENVIO_REAL }}
+      VALIDADE_DIAS: ${{ vars.VALIDADE_DIAS }}
+      LOGO_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/img/logo.png
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Email de teste
+        if: inputs.email_teste != ''
+        run: python cron/rotina_diaria.py --teste "${{ inputs.email_teste }}"
+
+      - name: Sincronizar Conexa e enviar cupons do dia
+        if: inputs.email_teste == ''
+        run: python cron/rotina_diaria.py

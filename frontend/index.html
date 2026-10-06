@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Entrar — Vilaj Cupons</title>
+<link rel="icon" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Outfit:wght@200;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main class="login">
+  <div class="login__setas" aria-hidden="true">›››</div>
+
+  <div class="login__caixa">
+    <img class="login__logo" src="img/logo.png" alt="Vilaj Coworking">
+
+    <form class="login__cartao" id="form-login" novalidate>
+      <h1>Cupons de aniversário</h1>
+      <p>Entre para validar cupons e ver os aniversariantes.</p>
+
+      <p class="login__erro" id="erro" role="alert" hidden></p>
+
+      <div class="login__campo">
+        <label class="rotulo" for="email">Email</label>
+        <input class="campo" id="email" type="email" autocomplete="username" required>
+      </div>
+      <div class="login__campo">
+        <label class="rotulo" for="senha">Senha</label>
+        <input class="campo" id="senha" type="password" autocomplete="current-password" required>
+      </div>
+
+      <button class="botao" type="submit" id="entrar">Entrar</button>
+    </form>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>
